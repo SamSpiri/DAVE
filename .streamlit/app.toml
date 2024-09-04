@@ -1,3 +1,7 @@
+[global]
+require_password = true
+print_usage = false
+
 [databases.EnglishVedabase]
 subtitle = "🔮 Ask a question to Shrila Prabhupada's books."
 new_chat = "♻️ New chat"
@@ -16,7 +20,6 @@ English version of books is used to provide context for your questions.\n
 It is more accurate, because OpenAI model understands English better.\n
 """
 pre_prompt = "Use files and provide full quotes: "
-print_usage = false
 
 
 [databases.RussianVedabase]
@@ -37,4 +40,3 @@ description = """
 Это менее точно, потому что модель OpenAI понимает английский язык лучше.\n
 """
 pre_prompt = "Используй файлы и приводи полные цитаты: "
-print_usage = false

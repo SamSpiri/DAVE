@@ -67,11 +67,12 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-#if not check_password():
-#    st.stop()  # Do not continue if check_password is not True.
-
-
 app_config_toml = toml.load(".streamlit/app.toml")
+
+if app_config_toml["global"]["require_password"] and not check_password():
+    st.stop()  # Do not continue if check_password is not True.
+
+
 dbs = app_config_toml['databases']
 if "database" not in st.session_state:
     st.selectbox('Select Database', dbs.keys(), index=None, placeholder="Please Select", key="database_select")
@@ -217,7 +218,7 @@ if True:
                                 assistant_output[-1]["content"] += f"[{index}] {cited_file.filename}; "
                                 assistant_text_box.markdown(assistant_output[-1]["content"])
 
-                elif isinstance(event, ThreadRunStepCompleted) and app_config.print_usage:
+                elif isinstance(event, ThreadRunStepCompleted) and app_config_toml["global"]["print_usage"]:
                     if event.data.usage is not None:
                         assistant_text_box = st.empty()
                         assistant_output.append({"type": "text",
