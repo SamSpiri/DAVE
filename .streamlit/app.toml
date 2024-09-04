@@ -1,0 +1,12 @@
+[databases.EnglishVedabase]
+subtitle = "🔮 Ask a question to Shrila Prabhupada's books."
+new_chat = "♻️ New chat"
+prompt = "Describe your query in detail. There will be no clarifying questions."
+pre_prompt = "Use files and provide full quotes: "
+print_usage = false
+[databases.RussianVedabase]
+subtitle = "🔮 Задайте вопрос книгам Шрилы Прабхупады."
+new_chat = "♻️ Новый чат"
+prompt = "Подробно опишите свой запрос. Уточняющих вопросов не будет."
+pre_prompt = "Используй файлы и приводи полные цитаты: "
+print_usage = false
