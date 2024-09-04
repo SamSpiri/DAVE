@@ -150,10 +150,6 @@ if True:
         OPENAI_API_KEY = st.secrets[database]["OPENAI_API_KEY"]
         ASSISTANT_ID = st.secrets[database]["ASSISTANT_ID"]
 
-        # Initialise the OpenAI client, and retrieve the assistant
-        client = OpenAI(api_key=OPENAI_API_KEY)
-        assistant = client.beta.assistants.retrieve(ASSISTANT_ID)
-
         st.session_state.messages.append({"role": "user",
                                         "items": [
                                             {"type": "text", 
@@ -164,6 +160,9 @@ if True:
             st.markdown(prompt)
 
         with st.chat_message("assistant"):
+            # Initialise the OpenAI client, and retrieve the assistant
+            client = OpenAI(api_key=OPENAI_API_KEY)
+            assistant = client.beta.assistants.retrieve(ASSISTANT_ID)
 
             # Create a new thread
             if "thread_id" not in st.session_state:
