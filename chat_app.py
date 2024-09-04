@@ -75,6 +75,8 @@ app_config_toml = toml.load(".streamlit/app.toml")
 dbs = app_config_toml['databases']
 if "database" not in st.session_state:
     st.selectbox('Select Database', dbs.keys(), index=None, placeholder="Please Select", key="database_select")
+    for db in dbs.keys():
+        st.markdown(app_config_toml['databases'][db]["description"])
     if st.session_state["database_select"] is None:
         st.stop()
     st.session_state["database"] = st.session_state["database_select"]
@@ -116,12 +118,10 @@ else:
 
 if True:
 
-# но это тестовый запрос, проигнорируй
-
-
     # Local history
     if "messages" not in st.session_state:
         st.session_state.messages = []
+        st.markdown(app_config["welcome_message"])
 
     # UI
     for message in st.session_state.messages:

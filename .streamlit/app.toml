@@ -1,12 +1,40 @@
 [databases.EnglishVedabase]
 subtitle = "🔮 Ask a question to Shrila Prabhupada's books."
 new_chat = "♻️ New chat"
-prompt = "Describe your query in detail. There will be no clarifying questions."
+prompt = "your query"
+welcome_message = """
+## Instructions
+Please describe your query in detail. The bot does not ask clarifying questions, but you can provide clarifying information in subsequent queries.\n
+Each query is a resource-intensive operation. Please use the bot wisely. Provide all necessary information in the first query.\n
+Please note that processing your query may take some time. Please be patient.\n
+The bot does not save the history of queries and responses. Refreshing the page or closing the tab will result in data loss.
+"""
+description = """
+## EnglishVedabase
+Choose EnglishVedabase to chat with english content of **vedabase.io**.\n
+English version of books is used to provide context for your questions.\n
+It is more accurate, because OpenAI model understands English better.\n
+"""
 pre_prompt = "Use files and provide full quotes: "
 print_usage = false
+
+
 [databases.RussianVedabase]
 subtitle = "🔮 Задайте вопрос книгам Шрилы Прабхупады."
 new_chat = "♻️ Новый чат"
-prompt = "Подробно опишите свой запрос. Уточняющих вопросов не будет."
+prompt = "ваш запрос"
+welcome_message = """
+## Инструкция
+Подробно опишите свой запрос. Бот не задаёт уточняющих вопросов, но вы можете давать уточняющую информацию в последующих запросах.\n
+Каждый запрос это ресурсоёмкая операция. Пожалуйста, используйте бота разумно и предоставляйте всю необходимую информацию в первом запросе.\n
+Учтите что обработка запроса может занять некоторое время. Пожалуйста, будьте терпеливы.\n
+Бот не сохраняет историю запросов и ответов. Обновление страницы или закрытие вкладки приведёт к потере данных.
+"""
+description = """
+## RussianVedabase
+Выберите RussianVedabase для общения с русским контентом **vedabase.io**.\n
+Используется русская версия книг для предоставления контекста для ваших вопросов.\n
+Это менее точно, потому что модель OpenAI понимает английский язык лучше.\n
+"""
 pre_prompt = "Используй файлы и приводи полные цитаты: "
 print_usage = false
