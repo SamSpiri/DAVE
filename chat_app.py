@@ -207,14 +207,16 @@ if True:
                     elif isinstance(event, ThreadMessageCompleted):
                         annotations = event.data.content[0].text.annotations
                         if annotations is not None and len(annotations):
-                            assistant_output += f"\n\nFiles: "
+                            new_text = ""
+                            new_text += f"\n\nFiles: "
                             index = 0
                             for annotation in annotations:
                                 index += 1
                                 if file_citation := getattr(annotation, "file_citation", None):
                                     cited_file = client.files.retrieve(file_citation.file_id)
-                                    assistant_output += f"[{index}] {cited_file.filename}; "
-                            yield assistant_output[len(assistant_output) - len(new_text):]
+                                    new_text += f"[{index}] {cited_file.filename}; "
+                            assistant_output += new_text
+                            yield new_text
 
                     elif isinstance(event, ThreadRunStepCompleted) and app_config_toml["global"]["print_usage"]:
                         if event.data.usage is not None:
