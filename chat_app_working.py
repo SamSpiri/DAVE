@@ -185,44 +185,44 @@ if True:
                 stream=True
             )
 
-            def stream_generator():
-                assistant_output = ""
-                assistant_text_box = st.empty()
+            assistant_output = []
 
-                for event in stream:
-                    if isinstance(event, ThreadMessageCreated):
-                        assistant_output = ""
+            for event in stream:
+                print(event)
+                if isinstance(event, ThreadMessageCreated):
+                    assistant_output.append({"type": "text",
+                                            "content": ""})
+                    assistant_text_box = st.empty()
 
-                    elif isinstance(event, ThreadMessageDelta):
-                        delta = event.data.delta.content[0]
-                        if isinstance(delta, TextDeltaBlock):
-                            new_text = ""
-                            annotations = delta.text.annotations
-                            if annotations is not None and len(annotations):
-                                for annotation in annotations:
-                                    new_text += f" [{annotation.index+1}] "
-                            else:
-                                new_text = delta.text.value
-                            assistant_output += new_text
-                            yield new_text
-
-                    elif isinstance(event, ThreadMessageCompleted):
-                        annotations = event.data.content[0].text.annotations
+                elif isinstance(event, ThreadMessageDelta):
+                    delta = event.data.delta.content[0]
+                    if isinstance(delta, TextDeltaBlock):
+                        assistant_text_box.empty()
+                        annotations = delta.text.annotations
                         if annotations is not None and len(annotations):
-                            assistant_output += f"\n\nFiles: "
-                            index = 0
                             for annotation in annotations:
-                                index += 1
-                                if file_citation := getattr(annotation, "file_citation", None):
-                                    cited_file = client.files.retrieve(file_citation.file_id)
-                                    assistant_output += f"[{index}] {cited_file.filename}; "
-                            yield assistant_output[len(assistant_output) - len(new_text):]
+                                assistant_output[-1]["content"] += f" [{annotation.index+1}] "
+                        else:
+                            assistant_output[-1]["content"] += delta.text.value
+                        assistant_text_box.markdown(assistant_output[-1]["content"])
 
-                    elif isinstance(event, ThreadRunStepCompleted) and app_config_toml["global"]["print_usage"]:
-                        if event.data.usage is not None:
-                            usage_info = f"{event.data.usage}"
-                            yield usage_info
+                elif isinstance(event, ThreadMessageCompleted):
+                    annotations = event.data.content[0].text.annotations
+                    if annotations is not None and len(annotations):
+                        assistant_output[-1]["content"] += f"\n\nFiles: "
+                        index = 0
+                        for annotation in annotations:
+                            index += 1
+                            if file_citation := getattr(annotation, "file_citation", None):
+                                cited_file = client.files.retrieve(file_citation.file_id)
+                                assistant_output[-1]["content"] += f"[{index}] {cited_file.filename}; "
+                                assistant_text_box.markdown(assistant_output[-1]["content"])
 
-                st.session_state.messages.append({"role": "assistant", "items": [{"type": "text", "content": assistant_output}]})
+                elif isinstance(event, ThreadRunStepCompleted) and app_config_toml["global"]["print_usage"]:
+                    if event.data.usage is not None:
+                        assistant_text_box = st.empty()
+                        assistant_output.append({"type": "text",
+                                                "content": f"{event.data.usage}"})
+                        assistant_text_box.markdown(assistant_output[-1]["content"])
 
-            st.write_stream(stream_generator())
+            st.session_state.messages.append({"role": "assistant", "items": assistant_output})

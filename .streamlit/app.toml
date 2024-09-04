@@ -22,6 +22,7 @@ It is more accurate, because OpenAI model understands English better.\n
 pre_prompt = "Use files and provide full quotes: "
 
 
+
 [databases.RussianVedabase]
 subtitle = "🔮 Задайте вопрос книгам Шрилы Прабхупады."
 new_chat = "♻️ Новый чат"
@@ -40,3 +41,18 @@ description = """
 Это менее точно, потому что модель OpenAI понимает английский язык лучше.\n
 """
 pre_prompt = "Используй файлы и приводи полные цитаты: "
+
+
+[databases.test]
+subtitle = "🔮 Ask a question to fast and dumb model."
+new_chat = "♻️ New chat"
+prompt = "your query"
+welcome_message = """
+## Instructions
+lol it's a test
+"""
+description = """
+## test
+Choose test to chat with test model.\n
+"""
+pre_prompt = ""
