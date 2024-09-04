@@ -160,25 +160,25 @@ if True:
                                             "content": prompt
                                             }]})
 
-        # Create a new thread
-        if "thread_id" not in st.session_state:
-            thread = client.beta.threads.create()
-            st.session_state.thread_id = thread.id
-            print(st.session_state.thread_id)
-
-        client.beta.threads.update(
-                thread_id=st.session_state.thread_id,
-        )
-        client.beta.threads.messages.create(
-            thread_id=st.session_state.thread_id,
-            role="user",
-            content=f"{app_config['pre_prompt']}{prompt}"
-        )
-
         with st.chat_message("user"):
             st.markdown(prompt)
 
         with st.chat_message("assistant"):
+
+            # Create a new thread
+            if "thread_id" not in st.session_state:
+                thread = client.beta.threads.create()
+                st.session_state.thread_id = thread.id
+
+            client.beta.threads.update(
+                    thread_id=st.session_state.thread_id,
+            )
+            client.beta.threads.messages.create(
+                thread_id=st.session_state.thread_id,
+                role="user",
+                content=f"{app_config['pre_prompt']}{prompt}"
+            )
+
             stream = client.beta.threads.runs.create(
                 thread_id=st.session_state.thread_id,
                 assistant_id=ASSISTANT_ID,
@@ -187,7 +187,6 @@ if True:
 
             def stream_generator():
                 assistant_output = ""
-                assistant_text_box = st.empty()
 
                 for event in stream:
                     if isinstance(event, ThreadMessageCreated):
@@ -222,6 +221,8 @@ if True:
                         if event.data.usage is not None:
                             usage_info = f"{event.data.usage}"
                             yield usage_info
+
+                        st.rerun()
 
                 st.session_state.messages.append({"role": "assistant", "items": [{"type": "text", "content": assistant_output}]})
 

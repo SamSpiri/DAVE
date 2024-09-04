@@ -44,7 +44,7 @@ pre_prompt = "Используй файлы и приводи полные ци�
 
 
 [databases.test]
-subtitle = "🔮 Ask a question to fast and dumb model."
+subtitle = "🔮 Ask a question to a fast and dumb model."
 new_chat = "♻️ New chat"
 prompt = "your query"
 welcome_message = """
@@ -53,6 +53,6 @@ lol it's a test
 """
 description = """
 ## test
-Choose test to chat with test model.\n
+Choose test to chat with the test model.\n
 """
 pre_prompt = ""
